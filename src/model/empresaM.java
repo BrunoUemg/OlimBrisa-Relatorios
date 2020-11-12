@@ -11,21 +11,28 @@ package model;
  */
 public class empresaM {
       private Integer id;
+      private String inscricaoEstadual;
+
+    
     private String nome;
     private String telefone;
     private String endereco;
     private String cnpj;
+    private String email;
 
-    public empresaM(Integer id, String nome, String telefone, String endereco, String cnpj) {
-        this.id = id;
+    public empresaM() {
+      
+    }
+
+    public empresaM(Integer id, String inscricaoEstadual, String nome, String telefone, String endereco, String cnpj, String email) {
+         this.id = id;
+        this.inscricaoEstadual = inscricaoEstadual;
         this.nome = nome;
         this.telefone = telefone;
         this.endereco = endereco;
         this.cnpj = cnpj;
+        this.email = email;
     }
-    
-    
-    
 
     public Integer getId() {
         return id;
@@ -33,6 +40,14 @@ public class empresaM {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getInscricaoEstadual() {
+        return inscricaoEstadual;
+    }
+
+    public void setInscricaoEstadual(String inscricaoEstadual) {
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
     public String getNome() {
@@ -66,5 +81,16 @@ public class empresaM {
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    
+
     
 }
