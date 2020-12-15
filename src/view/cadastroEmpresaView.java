@@ -6,6 +6,7 @@
 package view;
 
 import DAO.empresaDAO;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import model.empresaM;
@@ -23,10 +24,13 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         initComponents();
         btnSalvar.setEnabled(false);
         btnCancelar.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         
         DefaultTableModel modelo = (DefaultTableModel) tbClientes.getModel();
         tbClientes.setRowSorter(new TableRowSorter(modelo));
         readJTable();
+         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone.jpg")).getImage());
     }
     
     public void readJTable(){
@@ -45,6 +49,26 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
                 c.getInscricaoEstadual(),
                 c.getCnpj(),
                     c.getEndereco()
+            });
+        }
+    }
+    
+     public void readJTableForName(String name){
+        DefaultTableModel modelo = (DefaultTableModel) tbClientes.getModel();
+        modelo.setNumRows(0);
+        empresaDAO cdao = new empresaDAO();
+        
+        for (empresaM c: cdao.readForName(name)){
+            
+            modelo.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getTelefone(),
+                c.getEmail(),         
+                c.getInscricaoEstadual(),
+                c.getCnpj(),
+                c.getEndereco()
+              
             });
         }
     }
@@ -88,7 +112,7 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Empresa");
         setResizable(false);
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -159,6 +183,11 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -279,6 +308,12 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbClientes);
 
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,7 +390,10 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarKeyReleased
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       
+       if(txtInscricaoEstadual.getText().isEmpty() || txtNomeEmpresa.getText().isEmpty() || txtCNPJ.getText().isEmpty()
+               || txtContato.getText().isEmpty() || txtEndereco.getText().isEmpty() || txtEmail.getText().isEmpty() ){
+       JOptionPane.showMessageDialog(null, "Preencha todos os campos !!");
+       }else{
         empresaM e = new empresaM();
         empresaDAO dao = new empresaDAO();
         
@@ -374,6 +412,8 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         txtEndereco.setText("");        
         txtInscricaoEstadual.setText("");
          readJTable();
+          preparaSalvareCancelar();
+       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -382,12 +422,14 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         preparaNovo();
         ativaCampos();
         txtNomeEmpresa.requestFocusInWindow();
+         
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
           limpaCamposEmpresa();
         preparaSalvareCancelar();
-        desativaCampos();
+       
+       
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void tbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClientesMouseClicked
@@ -406,7 +448,7 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
            txtCNPJ.setText(tbClientes.getValueAt(tbClientes.getSelectedRow(), 5).toString());
             txtEndereco.setText(tbClientes.getValueAt(tbClientes.getSelectedRow(), 6).toString());
           
-             
+             preparaSelecaoTabela();
           
             
         }
@@ -423,12 +465,74 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseClicked
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+          readJTableForName(txtBuscar.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+ if(tbClientes.getSelectedRow() != -1){
+            
+        empresaM e = new empresaM();
+        empresaDAO dao = new empresaDAO();
+        e.setNome(txtNomeEmpresa.getText());
+        e.setInscricaoEstadual(txtInscricaoEstadual.getText());
+        e.setTelefone(txtContato.getText());
+        e.setEndereco(txtEndereco.getText());
+        e.setCnpj(txtCNPJ.getText());
+         e.setEmail(txtEmail.getText());
+        e.setId((int) tbClientes.getValueAt(tbClientes.getSelectedRow(), 0));
+        dao.update(e);
+        
+        txtNomeEmpresa.setText("");
+        txtInscricaoEstadual.setText("");
+        txtContato.setText("");
+        txtCNPJ.setText("");
+      
+        txtEndereco.setText("");
        
+        txtEmail.setText("");
+    
+        
+        
+        
+        readJTable();
+         preparaSalvareCancelar();
+        }       
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+       if(tbClientes.getSelectedRow() != -1){
+         
+          
+           
+           empresaM c = new empresaM();
+        empresaDAO dao = new empresaDAO();
+        c.setId((int) tbClientes.getValueAt(tbClientes.getSelectedRow(), 0));
+        dao.delete(c);
+        
+        txtNomeEmpresa.setText("");
+        txtInscricaoEstadual.setText("");
+       
+        txtContato.setText("");
+        txtCNPJ.setText("");
+        
+      
+        txtEndereco.setText("");
+       
+        txtEmail.setText("");
+       
+        
+        
+        
+        readJTable();
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione um cliente para excluir!");
+        }
+        preparaSalvareCancelar();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+      
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -471,6 +575,8 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
     public void preparaSalvareCancelar() {
         btnNovo.setEnabled(true);
         btnSalvar.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         btnCancelar.setEnabled(false);
         tbClientes.setEnabled(true);
     }
@@ -526,7 +632,7 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
        
     }
     public void preparaAlterar() {
-        btnNovo.setEnabled(false);
+        btnSalvar.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnAlterar.setEnabled(false);
         btnNovo.setEnabled(true);
@@ -543,6 +649,7 @@ public class cadastroEmpresaView extends javax.swing.JFrame {
         btnNovo.setEnabled(true);
         btnExcluir.setEnabled(true);
         btnAlterar.setEnabled(true);
+        btnCancelar.setEnabled(true);
     }
     
     // FIM MÉTODOS DE CONTROLE DE BOTÕES

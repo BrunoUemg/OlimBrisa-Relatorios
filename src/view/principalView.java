@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.awt.Color;
 import javax.swing.JFrame;
 import model.usuarioM;
 
@@ -21,7 +22,8 @@ public class principalView extends javax.swing.JFrame {
     public principalView() {
         initComponents();
          this.setVisible(true);
-       
+         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone.jpg")).getImage());
        
     }
 
@@ -42,7 +44,7 @@ public class principalView extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jmCadastrarEmpresa = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -66,17 +68,27 @@ public class principalView extends javax.swing.JFrame {
         jMenu2.setText("Cadastrar");
 
         jmCadastrarEmpresa.setText("Empresa");
+        jmCadastrarEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCadastrarEmpresaActionPerformed(evt);
+            }
+        });
         jMenu2.add(jmCadastrarEmpresa);
 
         jMenuBar1.add(jMenu2);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/movimentacao.fw.png"))); // NOI18N
-        jMenu4.setText("Inserir serviço");
-        jMenuBar1.add(jMenu4);
+        jMenu4.setText("Operações");
 
-        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/lupa.png"))); // NOI18N
-        jMenu5.setText("Consultar");
-        jMenuBar1.add(jMenu5);
+        jMenuItem2.setText("Inserir serviço");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -97,6 +109,16 @@ public class principalView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jmCadastrarEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCadastrarEmpresaActionPerformed
+       cadastroEmpresaView emp = new cadastroEmpresaView();
+       emp.setVisible(true);
+    }//GEN-LAST:event_jmCadastrarEmpresaActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+       servico ser = new servico();
+       ser.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -106,9 +128,13 @@ public class principalView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jmCadastrarEmpresa;
     // End of variables declaration//GEN-END:variables
+
+    
+   
+    
 }

@@ -89,7 +89,7 @@ public class empresaDAO {
         PreparedStatement stmt = null;
         
         try {
-            stmt = (PreparedStatement) con.prepareStatement("UPDATE empresa SET nome_empresa = ?,inscricao_estadual = ?,cnpj = ?,contato = ?,endereco = ?,email = ? = ? WHERE idempresa = ?");
+            stmt = (PreparedStatement) con.prepareStatement("UPDATE empresa SET nome_empresa = ?,inscricao_estadual = ?,cnpj = ?,contato = ?,endereco = ?,email = ?  WHERE idempresa = ?");
             stmt.setString(1,c.getNome());
             stmt.setString(2,c.getInscricaoEstadual());
             stmt.setString(3,c.getCnpj());
@@ -128,5 +128,43 @@ public class empresaDAO {
         }
     }
      
-    
+      public List<empresaM> readForName(String name){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        List<empresaM> cliente = new ArrayList<>();
+        
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("SELECT * FROM empresa WHERE nome_empresa LIKE ?");
+            stmt.setString(1, "%"+name+"%");
+            rs = stmt.executeQuery();
+            
+            while (rs.next()){
+                
+                empresaM clientes = new empresaM();
+                
+                clientes.setId(rs.getInt("idempresa"));
+                clientes.setNome(rs.getString("nome_empresa"));
+                clientes.setInscricaoEstadual(rs.getString("inscricao_estadual"));
+                clientes.setCnpj(rs.getString("cnpj"));
+                clientes.setTelefone(rs.getString("contato"));
+                clientes.setEmail(rs.getString("email"));
+                clientes.setEndereco(rs.getString("endereco"));
+               
+                cliente.add(clientes);
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(usuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return cliente;
+    }
+
+   
 }

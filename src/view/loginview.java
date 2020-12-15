@@ -10,6 +10,7 @@ import DAO.usuarioDAO;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import model.usuarioM;
+import model.utilitarios;
 
 /**
  *
@@ -27,6 +28,8 @@ public class loginview extends javax.swing.JFrame {
         //erro.setVisible(false);
         this.txtUsuario.requestFocus();
         usuario = new usuarioM();
+        
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone.jpg")).getImage());
          
        
     }
